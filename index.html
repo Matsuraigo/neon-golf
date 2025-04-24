@@ -7,7 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js" data-type="module"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
     <style>
         @keyframes neonGlow {
             0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 40px #ff00ff; }
@@ -20,7 +21,6 @@
         body {
             background: linear-gradient(135deg, #1a1a40 0%, #000033 100%);
         }
-        /* Animation for slide and fade-in */
         @keyframes slideFadeIn {
             from {
                 opacity: 0;
@@ -39,6 +39,10 @@
             opacity: 1;
             animation: slideFadeIn 0.5s ease-out forwards;
         }
+        /* Fallback for no JavaScript */
+        .no-js .animate-section {
+            opacity: 1;
+        }
     </style>
 </head>
 <body class="text-white font-sans">
@@ -49,7 +53,7 @@
         var gk_xlsxFileLookup = {};
         var gk_fileData = {};
         function filledCell(cell) {
-          return cell !== '' && cell != null;
+            return cell !== '' && cell != null;
         }
         function loadFileData(filename) {
             if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
@@ -60,16 +64,16 @@
                     var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
                     var filteredData = jsonData.filter(row => row.some(filledCell));
                     var headerRowIndex = filteredData.findIndex((row, index) =>
-                      row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                        row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
                     );
                     if (headerRowIndex === -1 || headerRowIndex > 25) {
-                      headerRowIndex = 0;
+                        headerRowIndex = 0;
                     }
                     var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
                     csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
                     return csv;
                 } catch (e) {
-                    console.error(e);
+                    console.error('Error in loadFileData:', e);
                     return "";
                 }
             }
@@ -77,7 +81,7 @@
         }
     </script>
 
-    <script type="text/babel">
+    <script type="text/babel" data-presets="react">
         function Header() {
             const handleScroll = (id) => {
                 const element = document.getElementById(id);
@@ -270,21 +274,28 @@
 
         // Intersection Observer to trigger animations
         document.addEventListener('DOMContentLoaded', () => {
-            const sections = document.querySelectorAll('.animate-section');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target); // Stop observing once visible
-                    }
+            try {
+                const sections = document.querySelectorAll('.animate-section');
+                if (sections.length === 0) {
+                    console.warn('No .animate-section elements found');
+                }
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.1
                 });
-            }, {
-                threshold: 0.1 // Trigger when 10% of the section is visible
-            });
 
-            sections.forEach(section => {
-                observer.observe(section);
-            });
+                sections.forEach(section => {
+                    observer.observe(section);
+                });
+            } catch (e) {
+                console.error('Error setting up Intersection Observer:', e);
+            }
         });
     </script>
 </body>
