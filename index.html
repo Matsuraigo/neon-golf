@@ -48,6 +48,7 @@
     <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.20.6/babel.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
     <style>
         @keyframes neonGlow {
             0% { text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 20px #ff00ff, 0 0 40px #ff00ff; }
@@ -143,7 +144,7 @@
                             <img src="https://www.mlive.com/resizer/MkRMLtaU_f3vwHMAbnQYho3RUxs=/arc-anglerfish-arc2-prod-advancelocal/public/G3J26NPTJZFBNKMPOIRENVNWAY.jpeg" alt="Putt Bar" className="w-full md:w-1/2 rounded-lg" />
                             <div className="text-center md:text-left">
                                 <p className="text-lg text-gray-300 mb-4">Entspanne dich und genieße unsere neonbeleuchtete Bar mit einer großen Auswahl an Getränken, die dein Golf-Erlebnis perfekt ergänzen.</p>
-                                <a href="#" className="bg-cyan-500 text-black py-2 px-4 rounded-full font-bold hover:bg-cyan-400">Speisekarte Ansehen</a>
+                                <a href="menu.html" className="bg-cyan-500 text-black py-2 px-4 rounded-full font-bold hover:bg-cyan-400">Speisekarte Ansehen</a>
                             </div>
                         </div>
                     </div>
@@ -170,10 +171,10 @@
 
         function Staff() {
             const staff = [
-                { name: "Elizabeth Korzh", role: "Managerin", image: "https://media.discordapp.net/attachments/1022913165194960987/1364543227075756072/IMG-20250423-WA0012.jpg?ex=680a0d69&is=6808bbe9&hm=d0fcf3d323441e7ed022883064d4afdefa8e967d470a56dc303ed10220ecba0c&=&format=webp&width=996&height=930" },
+                { name: "Elizabeth Korzh", role: "Managerin", image: "https://media.discordapp.net/attachments/1022913165194960987/1364543227075756072/IMG-20250423-WA0012.jpg?ex=680a0d69&is=6808bbe9&hm=d0fcf3d323441e7ed022883064d4afdefa8e967d470a56dc303ed10220ecba0c=&format=webp&width=996&height=930" },
                 { name: "Duc Anh Nguyen", role: "Event-Koordinator", image: "https://scontent-fra5-2.xx.fbcdn.net/v/t39.30808-6/480672117_1677441039865916_3972564417499775765_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=EihGID_PzKUQ7kNvwFhl0pq&_nc_oc=Adn2t7gWtaZPZux_-enaGCOQsTxigQdXjclFritaWoWX-4ZtqEcyvr6GoBMq86rmMI0&_nc_zt=23&_nc_ht=scontent-fra5-2.xx&_nc_gid=8HvbrhJkGRMAO-wthLs4pQ&oh=00_AfHRt3UeNKQEAYkk9PcarSHejP4L1Ow47ZCI-RN_GFW8hA&oe=680C4F55" },
-                { name: "Thi Kieu Trieu", role: "Barkeeperin", image: "https://media.discordapp.net/attachments/1022913165194960987/1363956928627343360/IMG-20250421-WA0009.jpg?ex=6809e5a0&is=68089420&hm=de67c40f2779f762b9be6e7277d2008fbe1b3f906f29d21f6c6bbb7598e60a51&=&format=webp&width=1214&height=930" },
-                { name: "Diya", role: "Kundenservice", image: "https://media.discordapp.net/attachments/1022913165194960987/1363961128564162670/IMG-20250421-WA0010.jpg?ex=6809e98a&is=6808980a&hm=7444db6bfef4620183a417e886ae80d8ccfb8adcfeb71a21c72d8b3050ca9e05&=&format=webp&width=589&height=770" }
+                { name: "Thi Kieu Trieu", role: "Barkeeperin", image: "https://media.discordapp.net/attachments/1022913165194960987/1363956928627343360/IMG-20250421-WA0009.jpg?ex=6809e5a0&is=68089420&hm=de67c40f2779f762b9be6e7277d2008fbe1b3f906f29d21f6c6bbb7598e60a51=&format=webp&width=1214&height=930" },
+                { name: "Diya", role: "Kundenservice", image: "https://media.discordapp.net/attachments/1022913165194960987/1363961128564162670/IMG-20250421-WA0010.jpg?ex=6809e98a&is=6808980a&hm=7444db6bfef4620183a417e886ae80d8ccfb8adcfeb71a21c72d8b3050ca9e05=&format=webp&width=589&height=770" }
             ];
 
             return (
@@ -257,5 +258,6 @@
         root.render(<App />);
     </script>
     <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'934fa0582871bfa8',t:'MTc0NTQzNTA2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9353e716dfda7bd5',t:'MTc0NTQ3OTkwMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
