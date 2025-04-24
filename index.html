@@ -1,43 +1,3 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,10 +20,62 @@
         body {
             background: linear-gradient(135deg, #1a1a40 0%, #000033 100%);
         }
+        /* Animation for slide and fade-in */
+        @keyframes slideFadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        .animate-section {
+            opacity: 0;
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .animate-section.visible {
+            opacity: 1;
+            animation: slideFadeIn 0.5s ease-out forwards;
+        }
     </style>
 </head>
 <body class="text-white font-sans">
     <div id="root"></div>
+
+    <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+                try {
+                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                    var filteredData = jsonData.filter(row => row.some(filledCell));
+                    var headerRowIndex = filteredData.findIndex((row, index) =>
+                      row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                    );
+                    if (headerRowIndex === -1 || headerRowIndex > 25) {
+                      headerRowIndex = 0;
+                    }
+                    var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+                    csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                    return csv;
+                } catch (e) {
+                    console.error(e);
+                    return "";
+                }
+            }
+            return gk_fileData[filename] || "";
+        }
+    </script>
 
     <script type="text/babel">
         function Header() {
@@ -96,7 +108,7 @@
 
         function Hero() {
             return (
-                <section id="home" className="h-screen flex items-center justify-center bg-cover bg-center" style={{ backgroundImage: "url('https://cdn.prod.website-files.com/62a7764c17286f703aca51d4/62fff0a1a23f224689fe677a_Glo%20Mini27.jpg')" }}>
+                <section id="home" className="h-screen flex items-center justify-center bg-cover bg-center animate-section" style={{ backgroundImage: "url('https://cdn.prod.website-files.com/62a7764c17286f703aca51d4/62fff0a1a23f224689fe677a_Glo%20Mini27.jpg')" }}>
                     <div className="text-center bg-black bg-opacity-60 p-8 rounded-lg">
                         <h2 className="text-6xl font-bold neon-text mb-4">Pull in the Dark</h2>
                         <p className="text-xl mb-6">Tauche ein in neonbeleuchtete Golfplätze und genieße einen Drink an unserer lebendigen Bar.</p>
@@ -114,7 +126,7 @@
             ];
 
             return (
-                <section id="courses" className="py-16">
+                <section id="courses" className="py-16 animate-section">
                     <div className="container mx-auto px-4">
                         <h2 className="text-4xl font-bold text-center neon-text mb-12">Unsere Neon-Golfplätze</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -136,7 +148,7 @@
 
         function Bar() {
             return (
-                <section id="bar" className="py-16 bg-gray-900">
+                <section id="bar" className="py-16 bg-gray-900 animate-section">
                     <div className="container mx-auto px-4">
                         <h2 className="text-4xl font-bold text-center neon-text mb-12">Neon-Bar</h2>
                         <div className="flex flex-col md:flex-row items-center gap-8">
@@ -153,7 +165,7 @@
 
         function VideoTour() {
             return (
-                <section id="video-tour" className="py-16">
+                <section id="video-tour" className="py-16 animate-section">
                     <div className="container mx-auto px-4">
                         <h2 className="text-4xl font-bold text-center neon-text mb-12">Video-Tour</h2>
                         <div className="flex justify-center">
@@ -177,7 +189,7 @@
             ];
 
             return (
-                <section id="staff" className="py-16">
+                <section id="staff" className="py-16 animate-section">
                     <div className="container mx-auto px-4">
                         <h2 className="text-4xl font-bold text-center neon-text mb-12">Unser Team</h2>
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -198,7 +210,7 @@
 
         function Contact() {
             return (
-                <section id="contact" className="py-16 bg-gray-900">
+                <section id="contact" className="py-16 bg-gray-900 animate-section">
                     <div className="container mx-auto px-4">
                         <h2 className="text-4xl font-bold text-center neon-text mb-12">Kontaktiere Uns</h2>
                         <div className="max-w-lg mx-auto">
@@ -216,7 +228,7 @@
 
         function ContactInfo() {
             return (
-                <section id="contact-info" className="py-8 bg-gray-900">
+                <section id="contact-info" className="py-8 bg-gray-900 animate-section">
                     <div className="container mx-auto px-4 text-center">
                         <h2 className="text-3xl font-bold neon-text mb-6">Unsere Kontaktinformationen</h2>
                         <p className="text-lg text-gray-300 mb-2">Email: <a href="mailto:pitd@gmail.com" className="text-cyan-400 hover:underline">pitd@gmail.com</a></p>
@@ -255,7 +267,25 @@
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
+
+        // Intersection Observer to trigger animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.animate-section');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // Stop observing once visible
+                    }
+                });
+            }, {
+                threshold: 0.1 // Trigger when 10% of the section is visible
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
     </script>
-    <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'934fa0582871bfa8',t:'MTc0NTQzNTA2My4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
