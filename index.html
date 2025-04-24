@@ -27,7 +27,7 @@
                 }
 
                 // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
                 csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
                 return csv;
             } catch (e) {
@@ -125,7 +125,7 @@
                                     <div className="p-6">
                                         <h3 className="text-2xl font-bold mb-2 neon-text">{course.name}</h3>
                                         <p className="text-gray-300">{course.description}</p>
-                                        <a href="#" className="mt-4 inline-block text-cyan-400 hover:underline">Jetzt Buchen</a>
+                                        <a href="booking.html" className="mt-4 inline-block text-cyan-400 hover:underline">Jetzt Buchen</a>
                                     </div>
                                 </div>
                             ))}
